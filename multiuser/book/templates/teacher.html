@@ -1,0 +1,59 @@
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<style>
+		.logout{
+ 			   color: #212529;
+    	background-color: lightgreen;
+    	border-color: #f8f9fa;
+				}
+
+		.list_of_students {
+    		font-size: 30px;
+				}
+
+
+		.Home{
+ 			   color: #212529;
+    	background-color: lightcoral;
+    	border-color: #f8f9fa;
+				}
+			</style>
+</head>
+<body>
+	 <ul id="nav">
+            <a href="{% url 'home' %}" class="btn btn-light Home">Home</a>
+          </ul>
+{% if user.is_authenticated %}
+<div class="container">
+   <p class="pt-3" style="position: relative;
+    left: 75%;">Logged in as <strong>{{ user.username }}</strong>. <a href="{% url 'logout' %}" class="btn btn-light logout" role="button">Log out</a>.</p>
+   {% endif %}
+   
+   <center>
+ 	<p class="text-primary list_of_students">List Of Teachers </p>
+	</center>
+
+<table class="table table-dark" id="example" style="width: 100%">
+	<thead>
+		<tr style="text-align: center;" >
+			<th> Name </th>
+			<th> Assigned Classes </th>
+			<th> Subjects </th>
+		
+		</tr>
+  </thead>
+		<tbody>
+
+		{% for teacher in teachers %}
+	    
+    	<tr style="text-align: center;">
+			<td>{{teacher.user}}</td>
+			<td>{% for class in teacher.assign_class.all %} {{class}}<br>{% endfor %}</td>
+			<td>{% for subject in teacher.subjects.all %}{{subject}}<br>{% endfor %}</td>
+		</tr>
+		{% endfor %}
+    </tbody>
+
+   </table>
+</div>
+</body>

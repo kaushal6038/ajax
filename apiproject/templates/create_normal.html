@@ -1,0 +1,128 @@
+<head>
+    Required meta tags
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    Bootstrap CSS
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <style type="text/css">
+        .spacer{
+            margin-top:25px;
+        }
+
+        button {height: 26px;
+        width: 35px;
+        }
+    </style>
+    {% block custom_css %}{% endblock %}
+    <title>Django Library App</title>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+</head>
+
+<form method='POST' action='' enctype='multipart/form-data'>{% csrf_token %}
+             
+             <div id="form_set" style="display:inline-block;">
+
+                 {{ formset.management_form }}
+                 <div class="row form-row spacer">
+
+                 {% for form in formset.forms %}
+                     <table class='no_error'>
+                         <tr ids={{ forloop.counter }}>
+                            <td> {{ form.name }}</td>
+                            <td> {{ form.number }}</td>
+                        
+                        </tr>
+                     </table>
+
+                        
+                 {% endfor %}
+
+                <input type="button" value="+" id="add_more" style="height: 40px;">
+             </div>
+
+             </div>
+             <div id="empty_form" style="display:none">
+                <table class='no_error1'>
+                    <tr ids="">      
+                        <td> {{ formset.empty_form.name }}</td>
+                        <td> {{ formset.empty_form.number }}</td>
+                        <td><button ids="" type="button" onclick="remove_form(this)" >
+                            -
+                    </button></td>
+                    </tr>
+                    </table>
+                    </div> 
+                    
+    
+             
+           
+             <script>
+                 $('#add_more').click(function() {
+
+                    var id = $('.no_error tr:last').attr("ids")
+                    var new_id = parseInt(id)+1
+                    var table = $(".no_error1");
+                    table.find('button').attr('ids',new_id)
+                    table.find('tr').attr('ids',new_id)
+                    
+                        // var table_row=table.find('tr').attr('ids',new_id)
+                        // var input=table.find('#id_form-__prefix__-number')
+                        // input.val("data")   
+                        
+                    $(".no_error").append(table.find('tbody').html().replace(/__prefix__/g, id))
+
+                    if (new_id>2){
+                        $("#id_form-"+id+"-number").val("someting enter")
+                        }
+
+                    var form_count=parseInt($('#id_form-TOTAL_FORMS').val())+1
+                    $('#id_form-TOTAL_FORMS').val(parseInt(form_count))
+                 });
+
+               function remove_form(elm){
+                    var ids= ($(elm).attr("ids"));
+                    var table = $(".no_error");
+
+                    var table_row = table.find('tbody')
+                    table_row.find("[ids="+ids+"]").remove()
+
+                    console.log(ids)
+                    if (ids==2){
+                        $("#id_form-2-number").val("")
+                        }
+
+                    var form_count=parseInt($('#id_form-TOTAL_FORMS').val())-1
+                    $('#id_form-TOTAL_FORMS').val(parseInt(form_count))
+                 }
+
+
+
+                    // var total = parseInt($('#id_form-TOTAL_FORMS').val()); 
+                
+
+                    // var form_idx = $('#id_form-TOTAL_FORMS').val();
+                    
+                    // if (total >  1){
+                    //     $('#id_form-'+(total-1)+'-number').remove();
+                    //     $('#id_form-'+(total-1)+'-name').remove();
+                    //     if ($('#id_form-'+total+'-name').remove()) {
+                    //         var form_idx = $('#id_form-TOTAL_FORMS').val();
+                    //         $('#id_form-TOTAL_FORMS').val(parseInt(form_idx) - 1)
+                    //     }     
+                    // } 
+                 // });
+             </script>
+
+              <button type='submit' class='save btn btn-default'
+                style="position: absolute;right: 8%;bottom: 20%;background-color: lightcyan;
+                    color: darkcyan;height: 48px;width: 59px;" name = 'sampleform'>Save</button>      
+             </form>
+
+
+
+
+

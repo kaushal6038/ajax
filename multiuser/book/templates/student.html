@@ -1,0 +1,65 @@
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<style>
+		.logout{
+ 			   color: #212529;
+    		background-color: lightgreen;
+    		border-color: #f8f9fa;
+				}
+		
+		.No_Data.text-primary  {
+    		font-size: 30px;
+    		color: red !important;
+				}
+
+		.Home{
+ 			   color: #212529;
+    	background-color: lightcoral;
+    	border-color: #f8f9fa;
+				}
+</style>
+</head>
+<body>
+	    <ul id="nav">
+            <a href="{% url 'home' %}" class="btn btn-light Home">Home</a>
+          </ul>
+
+{% if user.is_authenticated %}
+<div class="container">
+   <p class="pt-3" style="position: relative;
+    left: 75%;">Logged in as <strong>{{ user.username }}</strong>. <a href="{% url 'logout' %}" class="btn btn-light logout" role="button">Log out</a>.</p>
+   {% endif %}
+
+{% if students %}
+
+<center>
+ <p class="text-primary list_of_students">List Of Students </p>
+</center>
+
+<table class="table" id="example" style="width: 100%">
+	<thead class="thead-dark">
+		<tr style="text-align: center;" >
+			<th> Name </th>
+			<th> Class </th>
+		</tr>
+  </thead>
+		<tbody>
+
+		{% for student in students %}
+	    
+    	<tr style="text-align: center;">
+			<td>{{student.user}}</td>
+			<td>{{student.Class}}</td>
+			</tr>
+		{% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+	<p class="text-primary No_Data">No students are added </p>
+{% endif %}
+</div>
+
+</body>
+</html>

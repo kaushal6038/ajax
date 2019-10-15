@@ -1,0 +1,69 @@
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<style>
+		.logout{
+ 			   color: #212529;
+    	background-color: lightgreen;
+    	border-color: #f8f9fa;
+				}
+			</style>
+</head>
+<body>
+
+{% if user.is_authenticated %}
+<div class="container">
+   <p class="pt-3" style="position: relative;
+    left: 75%;">Logged in as <strong>{{ user.username }}</strong>. <a href="{% url 'logout' %}" class="btn btn-light logout" role="button">Log out</a>.</p>
+   {% endif %}
+
+{% if user.is_superuser %}
+<div class="conatiner">
+	<div class="row">
+		<div class="col-md-6">
+			<a href="{% url 'teacher_signup' %}" class="btn btn-light" role="button">Create Teacher account--></a>
+		</div>
+		<div class="col-md-6">
+			<a href="{% url 'student_signup' %}" class="btn btn-light" role="button">Create Student account ---></a>
+		</div>
+		<br>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+		<a href="{% url 'teachers' %}" class="btn btn-light" role="button"> List of Teachers</a>
+			</div>
+		<div class="col-md-6">
+		<a href="{% url 'classes' %}" class="btn btn-light" role="button"> List of Students By Classes</a>
+			</div>
+</div>
+</div>
+{% endif %}
+
+{% if user.is_teacher %}
+<div class="col-md-6">
+			<a href="{% url 'student_signup' %}" class="btn btn-light" role="button">Create Student account ---></a><div class="conatiner">
+<div class="row">
+		<div class="col-md-8">
+		<a href="{% url 'teachers' %}" class="btn btn-light" role="button"> List of Teachers</a>
+			</div>
+		<div class="col-md-4">
+		<a href="{% url 'classes' %}" class="btn btn-light" role="button"> List of Students By Classes</a>
+			</div>
+</div>
+</div>
+{% endif %}
+
+{% if user.is_student %}
+<div class="row">
+		<div class="col-md-6">
+		<a href="{% url 'classes' %}" class="btn btn-light" role="button"> List of Students</a>
+			</div>
+</div>
+</div>
+{% endif %}
+
+
+</div>
+
+ </body>
+ </html>

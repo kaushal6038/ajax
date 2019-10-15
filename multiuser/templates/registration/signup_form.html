@@ -1,0 +1,109 @@
+<html lang="en">
+  <head>
+    <style>
+    .helptext {
+      visibility: hidden;
+      }
+    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Django School{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css?family=Clicker+Script" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+    .Home{
+         color: #212529;
+      background-color: lightcoral;
+      border-color: #f8f9fa;
+        }
+      </style>
+  </head>
+  <body>
+
+   <ul id="nav">
+            <a href="{% url 'home' %}" class="btn btn-light Home">Home</a>
+          </ul>
+   
+    <div class="container my-4">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-sm-12">
+          <div class="row">
+            <div class="col-6">
+              <h1 class="logo">
+                <a href="{% url 'home' %}">
+                      <span class="icon-feather" data-toggle="tooltip" data-placement="right" title="Teacher profile"></span>
+                </a>
+              </h1>
+            </div>
+            <div class="col-6 text-right">
+              {% if user.is_authenticated %}
+                <p class="pt-3">Logged in as <strong>{{ user.username }}</strong>. <a href="{% url 'logout' %}">Log out</a>.</p>
+              {% else %}
+                <a href="{% url 'login' %}" class="btn btn-light" role="button">Log in</a>
+                <a href="{% url 'signup' %}" class="btn btn-primary" role="button">Sign up</a>
+              {% endif %}
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-body">
+              {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              {% endfor %}
+               <div class="row">
+              <div class="col-md-8 col-sm-10 col-12">
+                <h2>Creating a {{ user_type }} login</h2>
+                <form method="post" novalidate>
+                  {% csrf_token %}
+                  <input type="hidden" name="next" value="{{ next }}">
+                 <tr><th><label for="id_username">Username:</label></th><td><input id="id_username" type="text" name="username" maxlength="30" /></td></tr>
+                 <br>
+                  <tr><th><label for="id_password1">Password:</label></th><td><input type="password" name="password1" id="id_password1" /></td></tr>
+                  <br>
+                  <tr><th><label for="id_password2">Password confirmation:</label></th><td><input type="password" name="password2" id="id_password2" /></td></tr>
+                  <br>
+                  {% if form.assign_class %}
+                  Assigned Class
+                  {{form.assign_class}} 
+
+                  <a href="{% url 'classAdd' %}" class="btn btn-light" role="button"> class_add</a>
+
+                  <br>
+                  Subjects
+                  {{form.subjects}}
+                  {% endif %}
+
+                  {% if form.Class %}
+                  Class
+                  {{form.Class}}
+                  {% endif %}
+
+
+
+                  <button type="submit" class="btn btn-success">Sign up</button>
+                </form>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      })
+    </script>
+  </body>
+</html>
+
+
+ 

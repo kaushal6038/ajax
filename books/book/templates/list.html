@@ -1,0 +1,10 @@
+<table style="width: 100%" id='data'>
+    {% for person in personlist %}
+    <tr>
+    <th>{{person.name}}</th>
+    <th>{{person.birthdate}}</th>
+    <th>{{person.country}}</th>
+    <th>{{person.city}}</th>
+    </tr>
+    {% endfor %}
+  </table>

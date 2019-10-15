@@ -1,0 +1,97 @@
+ <html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  
+  <style>
+    div#example_info{
+      display: none;
+    }
+
+    div#example_paginate{
+      display:none;
+    }
+
+    div#example_filter{
+     display:none; 
+    }
+
+    div#example_length{
+     display:none; 
+    }
+  </style>
+
+</head>
+<body>
+
+<table id="example" style="width: 100%">
+	<thead>
+		<tr style="text-align: center;" >
+			<th> Name </th>
+			<th> BirthDate </th>
+			<th> Country </th>
+			<th> City </th>
+		</tr>
+  </thead>
+		<tbody>
+    {% for person in users %}
+    <tr style="text-align: center;">
+			<td>{{person.name}}</td>
+			<td>{{person.birthdate}}</td>
+			<td>{{person.country}}</td>
+			<td>{{person.city}}</td>
+		</tr>
+		{% endfor %}
+    </tbody>
+	
+</table>
+
+{% if users.has_other_pages %}
+
+  <ul class="pagination justify-content-center">
+    {% if users.has_previous %}
+      <li class="page-item" >
+    <a class="page-link"  href="?page={{ users.first_page }}">Previous </a></li>
+    {% else %}
+      <li  class="page-link disabled" style="margin-inline-end: 3px; "><span>Previous </span></li>
+    {% endif %}
+    {% for i in users.paginator.page_range %}
+      {% if users.number == i %}
+        <li class="page-item active">
+        <span class="page-link" >{{ i }} <span class="sr-only"></span></span></li>
+      {% else %}
+        <li style="margin-inline-end: 5px;">
+        <a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if users.has_next %}
+      <li class="page-item" >
+    <a class="page-link"  href="?page={{ users.end_index }}">Last</a></li>
+    {% else %}
+      <li class="page-link disabled" style="margin-inline-end: 3px;">
+        <span>Last</span></li>
+    {% endif %}
+  </ul>
+
+{% endif %}
+
+
+
+<script>
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<html>
+<head>
+  <style>
+  #table_row {
+                font-size: 20px;
+                font-weight: 100;
+                text-align: center;
+                color: #007cae;
+            }
+        
+   
+  </style>
+</head>
+<body>
+<table style="width: 100%" id='data'>
+	<thead>
+	<tr id="table_row" style="text-align: center;" >
+		<th> Name </th>
+		<th> BirthDate </th>
+		<th> Country </th>
+		<th> City </th>
+	</tr>
+  	</thead>
+    {% for person in personlist %}
+    <tr style="text-align: center;">
+    <td>{{person.name}}</td>
+    <td>{{person.birthdate}}</td>
+    <td>{{person.country}}</td>
+    <td>{{person.city}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  </body>
+  </html>

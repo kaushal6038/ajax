@@ -1,0 +1,28 @@
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<style>
+		.Home{
+ 			   color: #212529;
+    	background-color: lightcoral;
+    	border-color: #f8f9fa;
+				}
+			</style>
+
+</head>
+<body>
+	     <ul id="nav">
+            <a href="{% url 'home' %}" class="btn btn-light Home">Home</a>
+          </ul>
+	<div class="conatiner">
+			<div class="row">
+			{% for class in classes %}
+				<div class="col-md-4">
+					<a href="../students/{{class.id}}" class="btn btn-light">{{class.name}}</a>
+				</div>		
+			{% endfor %}
+		</div>
+	</div>
+</body>
+</html>

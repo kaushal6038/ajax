@@ -1,0 +1,121 @@
+<head>
+       <style>
+        div#error {
+            position: fixed;
+            background-color: #F3C4C4;
+            right: 10%;
+            border: 2px solid red;
+            border-radius: 5px;
+            padding: 0px 15px 0px 15px;
+            color: red;
+            }
+
+        div#error1 {
+            position: fixed;
+            background-color: #F3C4C4;
+            right: 10%;
+            border: 2px solid red;
+            border-radius: 5px;
+            padding: 0px 15px 0px 15px;
+            color: red;
+            }
+ </style>   
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>	
+
+</head>
+     <h3>login using your email address </h3> 
+<form method="post" action="">
+    {% csrf_token %} 
+     email : {{ form.email }}
+    
+    <button type="button" id="submit1">Send Otp</button>
+
+<div id="divCheckbox" style="display: none;">
+	 otp : {{ form.otp }}
+	
+	<button type="button" id="submit2"> Verify Otp </button>
+</form>
+</div>
+</form>
+
+<div id="error"  style="display: none;">
+  <p> This Otp is Not Valid </p>
+</div>
+
+<div id="error1"  style="display: none;">
+  <p> Otp Expired </p>
+</div>
+
+<script>
+    $("#submit1").click(function(){
+        var email = $('#id_email').val();
+        if($('#id_email').val() == ""){
+            alert("Please fill up the Email Field");
+        }else{
+            $.ajax({
+                type: "POST",
+                url : "email-ajax",
+                data: {
+                    'email': email,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    },
+         		success: function(data){
+         			console.log(data)
+         			if(data.status == 'True'){
+                		$("#submit1").hide()
+                        
+         				$("#divCheckbox").show()
+         				console.log(data.status) 
+            			}	
+                    else{
+                        console.log(data)
+                        window.location.href = '/api/v1/auth/registration/'
+                    }
+            		},    
+				}); 
+        	}
+        });
+
+    $("#submit2").click(function(){
+        var email = $('#id_email').val();
+        var otp = $('#id_otp').val();
+         if($('#id_email').val() == "" || $('#id_otp').val() == ""){
+            alert("Please fill up the Email Field");
+        }else{
+             $.ajax({
+                type: "POST",
+                url : "email-val-ajax",
+                data: {
+                    'email': email,
+                    'otp' : otp,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    },
+                success: function(data){
+                    console.log(data)
+                    if(data.status == 'True'){
+                        window.location.href = '/admin'
+                        }
+
+                    else if(data.status == 'False'){
+                        console.log("OTP expired")
+                        $("#error").show()
+                        setTimeout(function(){
+                            $("#error").fadeOut('slow');
+                        },1000);
+                    }
+
+                    else{
+                        $("#error1").show()
+                        setTimeout(function(){
+                            $("#error1").fadeOut('slow');
+                        },1000);
+                        // alert("Otp is Not Valid")
+
+                    }
+                    }
+                });
+            }
+        });
+   
+</script>
+

@@ -1,0 +1,94 @@
+<style type="text/css">
+  .tr{
+    text-align: center;
+  }
+</style>
+
+  <h2>Person Form</h2>
+
+  <form method="post" id="personForm" data-cities-url="{% url 'ajax_load_cities' %}" novalidate>
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <button type="button" id="submit">Save</button>
+     </form>
+<table style="width: 100%" >
+  <tbody id="PD">
+
+  </tbody>
+</table>
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <script>
+    $("#id_country").change(function () {
+      var url = $("#personForm").attr("data-cities-url"); 
+      var countryId = $(this).val(); 
+      $.ajax({                       
+        url: 'ajax-load-cities/',  
+        data: {
+          'country': countryId       
+                  },
+        success: function (data) {   
+          $("#id_city").html(data);  
+        }
+      });
+    });
+</script>
+
+<script>
+    $("#submit").click(function(){
+        var name = $('#id_name').val();
+        var birthdate = $('#id_birthdate').val();
+        var country = $('#id_country').val();
+        var city = $('#id_city').val();
+ 
+        if($('#id_name').val() == "" || $('#id_birthdate').val() == "" || $('#id_country').val() == "" || $('#id_city').val() == ""){
+            alert("Please fill up the required field");
+        }else{
+            $.ajax({
+                type: "POST",
+                url : "ajax-list",
+                data: {
+                    'name': name,
+                    'birthdate': birthdate,
+                    'country': country,
+                    'city': city,
+                     'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function(data){
+                    
+                    $('#PD').empty();
+                    var count= data.length;
+                    var thn ='<th>'+ 'Name' +'</th>'
+                    var thb ='<th>'+ 'BirthDate' +'</th>'
+                    var thC ='<th>'+ 'Country' +'</th>'
+                    var thc ='<th>'+ 'City' +'</th>'
+                    var trh = '<tr>' + thn + thb + thC + thc + '</tr>'
+                    $('#PD').append(trh)
+                    for(i=0;i<count;i++){
+                      var tdn ='<td>'+data[i]['name']+'</td>'
+                      var tdb='<td>'+data[i]['birthdate']+'</td>'
+                      var tdC='<td>'+data[i]['country']+'</td>'
+                      var tdc='<td>'+data[i]['city']+'</td>'
+                      var tr ='<tr class="tr">'+ tdn + tdb + tdC + tdc +'</tr><br>'
+                      $('#PD').append(tr)
+
+
+
+                      // $('#name').text(data[i].fields.name);
+                      // $('#birthdate').text(data[i].fields.birthdate);
+                      // $('#country').text(data[i].fields.country);
+                      // $('#city').text(data[i].fields.city);
+                    }
+                      //
+
+                      
+                }
+            });
+        }
+ 
+    });
+</script>
