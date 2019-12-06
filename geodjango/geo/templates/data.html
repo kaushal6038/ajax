@@ -1,0 +1,69 @@
+<html>
+
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+
+<h2>Person Details Form</h2>
+
+  <form method="post" id="personForm">
+    {% csrf_token %}
+    
+      Name: {{ form.name }}
+      <br></br>
+      location: <input type="hidden"  id='longitude' placeholder="longitude" value="{{ form.geo_location.longitude }}">
+      <input type="hidden" id='latitude' placeholder="latitude" value="{{ form.geo_location.latitude }}">
+      
+      
+	<button onclick="getLocation()" required>Get Current Location</button>
+     <br></br>
+     Address: {{ form.address }}
+
+    <button  onclick="submit_form()" type="button" id="submit">Save</button>
+     </form>
+
+
+
+<script>
+
+function getLocation() {
+  if (navigator.geolocation) {
+  	console.log("IF WORKS")
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+   alert("Geolocation is not supported by this browser.");
+  }
+}
+
+function showPosition(position) {
+  $('#latitude').val(position.coords.latitude); 
+  $('#longitude').val(position.coords.longitude);
+}
+
+function submit_form(){
+	var name = $('#id_name').val();
+	var longitude = $('#longitude').val();
+	var latitude = $('#latitude').val();
+	var address = $('#id_address').val();
+	console.log(name,longitude,latitude,address)
+	$.ajax({
+  			type: "POST",
+            url : "save-detail",
+            data: {'name' : name,
+            	'address' : address,
+                'longitude':longitude,
+                'latitude':latitude,
+                 'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+                success: function(data){
+                    console.log(data.message)
+				} 
+		});
+	}
+
+
+</script>
+
+</body>
+</html>

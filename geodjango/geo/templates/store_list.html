@@ -1,0 +1,73 @@
+<html>
+
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<style type="text/css">
+		.tr{
+		text-align: center;
+		}
+	</style>
+</head>
+
+<h3>Stores Near me</h3>
+<button onclick="getLocation()">Show Stores List</button>
+
+<table style="width: 100%" >
+  <tbody id="PD">
+
+  </tbody>
+</table>
+
+<script>
+
+function getLocation() {
+  if (navigator.geolocation) {
+  	console.log("IF WORKS")
+    navigator.geolocation.getCurrentPosition(showPosition,error,{enableHighAccuracy: true,timeout: 5000,maximumAge: 10000});
+  } else { 
+   alert("Geolocation is not supported by this browser.");
+  }
+}
+
+function error(err){
+	alert('enable location')
+}
+
+function showPosition(position) {
+  var latitude  = position.coords.latitude; 
+  var longitude =position.coords.longitude;
+  $.ajax({
+  			type: "POST",
+            url : "nearest_stores",
+            data: {
+                'longitude':longitude,
+                'latitude':latitude,
+                 'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+                success: function(data){
+                	console.log(data.shops)
+
+                	$('#PD').empty();
+                    var count= data.shops.length;
+                    var thn ='<th>'+ 'Store Name' +'</th>'
+                    var thb ='<th>'+ 'Address via lng/ltd' +'</th>'
+                    var thl ='<th>'+ 'Address via form' +'</th>'
+                    var trh = '<tr>' + thn + thb + thl +'</tr>'
+                    $('#PD').append(trh)
+                    
+                    for(i=0;i<count;i++){
+                    	console.log(data.location[i])
+
+                      var tdn ='<td>'+data.shops[i].fields.name+'</td>'
+                      var tdb='<td>'+data.location[i]+'</td>'
+                      var tdl='<td>'+data.shops[i].fields.address+'</td>'
+                     
+                      var tr ='<tr class="tr">'+ tdn + tdb+ tdl +'</tr><br>'
+                      $('#PD').append(tr)
+
+                  }
+    			}
+    		});
+}
+</script>
