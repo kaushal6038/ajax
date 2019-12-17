@@ -16,11 +16,11 @@
       <input type="hidden" id='latitude' placeholder="latitude" value="{{ form.geo_location.latitude }}">
       
       
-	<button onclick="getLocation()" required>Get Current Location</button>
+	<button type="button" onclick="getLocation()" required>Get Current Location</button>
      <br></br>
      Address: {{ form.address }}
 
-    <button  onclick="submit_form()" type="button" id="submit">Save</button>
+    <button type="button" onclick="submit_form()" type="button" id="submit">Save</button>
      </form>
 
 
